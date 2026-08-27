@@ -1,0 +1,63 @@
+name: Taeglicher Datenlauf
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+    inputs:
+      full_history:
+        description: "Komplette Historie neu laden (erster Lauf)"
+        type: boolean
+        default: false
+      limit:
+        description: "Nur die ersten N Werte, fuer Tests (0 = alle)"
+        type: string
+        default: "0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-run
+  cancel-in-progress: false
+
+jobs:
+  sammeln:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Daten holen und Kennzahlen rechnen
+        env:
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.full_history }}" = "true" ]; then ARGS="$ARGS --full-history"; fi
+          if [ -n "${{ inputs.limit }}" ] && [ "${{ inputs.limit }}" != "0" ]; then ARGS="$ARGS --limit ${{ inputs.limit }}"; fi
+          python -m agent.run_daily $ARGS
+
+      - name: Ergebnisse committen
+        run: |
+          git config user.name "don-elias-agent"
+          git config user.email "actions@github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Keine Aenderungen"
+          else
+            git commit -m "Datenlauf $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Zusammenfassung
+        if: always()
+        run: |
+          echo "## Lauf $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          tail -n 5 data/run_log.csv >> $GITHUB_STEP_SUMMARY || true
