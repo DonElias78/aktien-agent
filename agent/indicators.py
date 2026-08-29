@@ -76,6 +76,11 @@ def compute_metrics(df: pd.DataFrame) -> dict:
         out["mom_12_1"] = float("nan")
 
     rets = s.pct_change().dropna()
+    # Groesster Tagessprung im letzten Jahr. Dient als Bruchtest: echte Kurse
+    # springen selten ueber 90 Prozent an einem Tag, Umbenennungen und
+    # Umstellungen von Kryptowerten schon.
+    out["max_tagessprung_252d"] = (float(rets.tail(252).abs().max())
+                                   if len(rets) >= 1 else float("nan"))
     out["vol_21d"] = float(rets.tail(21).std() * np.sqrt(TRADING_DAYS)) if len(rets) >= 21 else float("nan")
     out["vol_252d"] = float(rets.tail(252).std() * np.sqrt(TRADING_DAYS)) if len(rets) >= 252 else float("nan")
 

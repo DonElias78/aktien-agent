@@ -28,6 +28,17 @@ from agent import fetch, indicators, storage, universe
 LOOKBACK_REFRESH_DAYS = 10   # so viele Tage werden bei jedem Lauf neu geholt
 MIN_DAYS_FOR_SCORE = 260     # weniger Historie, kein Score
 
+# Plausibilitaetsgrenzen fuer die Rangliste. Sie sortieren keine unbequemen
+# Kurse aus, sondern Datenfehler. Jede Grenze hat einen nachvollziehbaren
+# Grund und jeder Ausschluss wird im Report namentlich ausgewiesen.
+MAX_TAGESSPRUNG = 0.90   # ein Kurs, der an einem Tag um mehr als 90 Prozent
+                         # springt, hat einen Datenbruch, etwa durch
+                         # Umbenennung oder Umstellung einer Kryptowaehrung
+MIN_VOLA = 0.02          # unter 2 Prozent Jahresschwankung ist es ein
+                         # Stablecoin oder eine eingefrorene Reihe, keine
+                         # Anlagechance
+MAX_STALE_TAGE = 5       # aeltere Kurse gelten als nicht mehr aktuell
+
 
 def collect(session, assets, full_history: bool, fortschritt_alle: int = 50):
     """Holt alle Werte bei Yahoo, inkrementell wenn schon Historie da ist."""
@@ -71,6 +82,22 @@ def crypto_assets(session, top_n: int):
     return assets, skipped
 
 
+def ausschlussgrund(row) -> str:
+    """Warum ein Wert nicht in die Rangliste darf. Leer heisst: er darf."""
+    if row.get("n_days", 0) < MIN_DAYS_FOR_SCORE:
+        return f"zu kurze Historie ({row.get('n_days', 0)} Tage)"
+    sprung = row.get("max_tagessprung_252d")
+    if sprung is not None and not pd.isna(sprung) and sprung > MAX_TAGESSPRUNG:
+        return f"Datenbruch, groesster Tagessprung {sprung * 100:.0f} Prozent"
+    vola = row.get("vol_252d")
+    if vola is not None and not pd.isna(vola) and vola < MIN_VOLA:
+        return f"kaum Bewegung, Vola {vola * 100:.2f} Prozent, vermutlich Stablecoin"
+    grenze = (dt.date.today() - dt.timedelta(days=MAX_STALE_TAGE)).isoformat()
+    if row.get("last_date", "") < grenze:
+        return f"Kurs veraltet, letzter Stand {row.get('last_date')}"
+    return ""
+
+
 def build_rows(collected):
     rows = []
     for asset, df in collected:
@@ -85,9 +112,9 @@ def build_rows(collected):
             "last_date": pd.to_datetime(df["date"]).max().strftime("%Y-%m-%d"),
         }
         row.update(m)
-        row["score_raw"] = (indicators.score_row(m)
-                            if m.get("n_days", 0) >= MIN_DAYS_FOR_SCORE
-                            else float("nan"))
+        grund = ausschlussgrund(row)
+        row["ausschluss"] = grund
+        row["score_raw"] = float("nan") if grund else indicators.score_row(m)
         rows.append(row)
     indicators.cross_section_rank(rows, "score_raw")
     return rows
@@ -138,6 +165,25 @@ def write_report(path, today, rows, failed, duration, stale):
                 f"{fmt_pct(r.get('ret_21d'))} | {fmt_abs(r.get('vol_252d'))} | "
                 f"{'ja' if r.get('above_sma_200') else 'nein'} |")
         lines.append("")
+    ausgeschlossen = [r for r in rows if r.get("ausschluss")]
+    if ausgeschlossen:
+        lines.append(f"## Aus der Rangliste ausgeschlossen: {len(ausgeschlossen)} Werte")
+        lines.append("")
+        lines.append("Ausgeschlossen wird nur, was nachweislich ein Datenproblem hat, "
+                     "nie ein unbequemer Kurs. Jeder Fall steht hier mit Grund.")
+        lines.append("")
+        gruende: dict[str, list[str]] = {}
+        for r in ausgeschlossen:
+            art = r["ausschluss"].split(",")[0]
+            gruende.setdefault(art, []).append(f"{r['key']} ({r['ausschluss']})")
+        for art, werte in sorted(gruende.items(), key=lambda x: -len(x[1])):
+            lines.append(f"- **{art}**: {len(werte)} Werte")
+            for w in werte[:12]:
+                lines.append(f"  - {w}")
+            if len(werte) > 12:
+                lines.append(f"  - ... und {len(werte) - 12} weitere")
+        lines.append("")
+
     if failed:
         lines.append("## Fehlgeschlagene Abrufe")
         lines.append("")
@@ -157,7 +203,7 @@ def write_report(path, today, rows, failed, duration, stale):
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0,
-                    help="nur die ersten N stooq Werte, fuer Tests")
+                    help="nur die ersten N Werte, fuer Tests")
     ap.add_argument("--full-history", action="store_true",
                     help="komplette Historie neu laden statt inkrementell")
     ap.add_argument("--no-crypto", action="store_true")
@@ -209,6 +255,9 @@ def main() -> int:
         "failed_count": len(failed),
         "failed": [{"key": k, "error": m} for k, m in failed[:60]],
         "stale_symbols": stale[:60],
+        "ausgeschlossen": [{"key": r["key"], "grund": r["ausschluss"]}
+                           for r in rows if r.get("ausschluss")][:80],
+        "ausgeschlossen_anzahl": sum(1 for r in rows if r.get("ausschluss")),
         "top": {cls: top_by_class(rows, cls, 15) for cls in
                 ("aktie_us", "aktie_de", "etf", "rohstoff", "krypto")},
         "breadth": {
