@@ -1,0 +1,63 @@
+name: Diagnose 4
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pruefen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tagesaufloesung pruefen
+        run: |
+          python3 - <<'PY' | tee diagnose4_result.txt
+          import urllib.request, urllib.parse, json, time, datetime
+          UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+          def hol(u):
+              return urllib.request.urlopen(
+                  urllib.request.Request(u, headers={"User-Agent": UA}), timeout=30).read()
+
+          jetzt = int(time.time())
+          print("Diagnose 4 vom", datetime.datetime.utcnow().isoformat(), "UTC")
+          varianten = [
+              ("range=max",      "range=max&interval=1d"),
+              ("range=10y",      "range=10y&interval=1d"),
+              ("range=5y",       "range=5y&interval=1d"),
+              ("period ab 1970", f"period1=0&period2={jetzt}&interval=1d"),
+              ("period ab 2005", f"period1=1104537600&period2={jetzt}&interval=1d"),
+          ]
+          for sym in ["AAPL", "SPY", "BTC-USD", "SAP.DE", "GC=F"]:
+              print(f"-- {sym} --")
+              for name, q in varianten:
+                  try:
+                      u = (f"https://query1.finance.yahoo.com/v8/finance/chart/"
+                           f"{urllib.parse.quote(sym)}?{q}&events=div%2Csplit")
+                      d = json.loads(hol(u))
+                      res = d["chart"]["result"][0]
+                      ts = res["timestamp"]
+                      abstand = (ts[-1] - ts[-2]) / 86400 if len(ts) > 1 else 0
+                      erst = datetime.date.fromtimestamp(ts[0])
+                      letzt = datetime.date.fromtimestamp(ts[-1])
+                      adj = res["indicators"].get("adjclose", [{}])[0].get("adjclose")
+                      close = res["indicators"]["quote"][0]["close"]
+                      luecken = sum(1 for c in close if c is None)
+                      print(f"   {name:15} {len(ts):6} Punkte, {erst} bis {letzt}, "
+                            f"letzter Abstand {abstand:.1f} Tage, Luecken {luecken}, "
+                            f"adjclose {'ja' if adj else 'nein'}")
+                  except Exception as e:
+                      print(f"   {name:15} FEHLER {e!r}")
+          PY
+
+      - name: Ergebnis ins Repo schreiben
+        if: always()
+        run: |
+          git config user.name "don-elias-agent"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || (git commit -m "Diagnose 4 $(date -u +%H:%M)" && git push)
