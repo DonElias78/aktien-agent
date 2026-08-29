@@ -31,13 +31,33 @@ MIN_DAYS_FOR_SCORE = 260     # weniger Historie, kein Score
 # Plausibilitaetsgrenzen fuer die Rangliste. Sie sortieren keine unbequemen
 # Kurse aus, sondern Datenfehler. Jede Grenze hat einen nachvollziehbaren
 # Grund und jeder Ausschluss wird im Report namentlich ausgewiesen.
-MAX_TAGESSPRUNG = 0.90   # ein Kurs, der an einem Tag um mehr als 90 Prozent
-                         # springt, hat einen Datenbruch, etwa durch
-                         # Umbenennung oder Umstellung einer Kryptowaehrung
-MIN_VOLA = 0.02          # unter 2 Prozent Jahresschwankung ist es ein
-                         # Stablecoin oder eine eingefrorene Reihe, keine
-                         # Anlagechance
+MAX_TAGESSPRUNG = 2.50   # Sprung ueber 250 Prozent an einem Tag. Gemessen
+                         # an echten Faellen: Moderna hat sich am 19.08.2026
+                         # nach einer Krebsstudie an einem Tag verdreifacht
+                         # (plus 177 Prozent), das ist echt und muss drin
+                         # bleiben. Umgestellte Kryptowerte sprangen um 874,
+                         # 6314 und 125331 Prozent.
+GLATTE_FAKTOREN = (2, 3, 4, 5, 6, 8, 10, 20, 100, 1000)
+FAKTOR_TOLERANZ = 0.03   # Splits und Umstellungen treffen einen glatten
+                         # Faktor fast exakt, Nachrichten nicht. Monster
+                         # Beverage sprang nach dem 2 zu 1 Split um Faktor
+                         # 1.96, Moderna um 2.77. Nur der erste Fall ist ein
+                         # Artefakt.
+MIN_VOLA = 0.005         # unter 0,5 Prozent Jahresschwankung ist es ein
+                         # Stablecoin. Der Anleihen ETF SHY liegt bei 1,3
+                         # Prozent und muss drin bleiben, RLUSD bei 0,29.
 MAX_STALE_TAGE = 5       # aeltere Kurse gelten als nicht mehr aktuell
+
+
+def ist_glatter_faktor(sprung: float) -> int | None:
+    """Prueft, ob ein Tagessprung einem Split oder einer Umstellung entspricht."""
+    faktor = 1.0 + abs(sprung)
+    for f in GLATTE_FAKTOREN:
+        if abs(faktor - f) / f <= FAKTOR_TOLERANZ:
+            return f
+        if abs(faktor - 1 / f) <= FAKTOR_TOLERANZ / f:
+            return f
+    return None
 
 
 def collect(session, assets, full_history: bool, fortschritt_alle: int = 50):
@@ -87,8 +107,13 @@ def ausschlussgrund(row) -> str:
     if row.get("n_days", 0) < MIN_DAYS_FOR_SCORE:
         return f"zu kurze Historie ({row.get('n_days', 0)} Tage)"
     sprung = row.get("max_tagessprung_252d")
-    if sprung is not None and not pd.isna(sprung) and sprung > MAX_TAGESSPRUNG:
-        return f"Datenbruch, groesster Tagessprung {sprung * 100:.0f} Prozent"
+    if sprung is not None and not pd.isna(sprung):
+        if sprung > MAX_TAGESSPRUNG:
+            return f"Datenbruch, groesster Tagessprung {sprung * 100:.0f} Prozent"
+        faktor = ist_glatter_faktor(sprung) if sprung > 0.40 else None
+        if faktor:
+            return (f"Split oder Umstellung, Tagessprung {sprung * 100:.0f} Prozent "
+                    f"entspricht Faktor {faktor}")
     vola = row.get("vol_252d")
     if vola is not None and not pd.isna(vola) and vola < MIN_VOLA:
         return f"kaum Bewegung, Vola {vola * 100:.2f} Prozent, vermutlich Stablecoin"
