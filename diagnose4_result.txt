@@ -1,0 +1,31 @@
+Diagnose 4 vom 2026-08-29T11:31:58.386527 UTC
+-- AAPL --
+   range=max          168 Punkte, 1984-12-01 bis 2026-08-28, letzter Abstand 88.7 Tage, Luecken 0, adjclose ja
+   range=10y         2514 Punkte, 2016-08-29 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   range=5y          1255 Punkte, 2021-08-30 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 1970   11520 Punkte, 1980-12-12 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 2005    5448 Punkte, 2005-01-03 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+-- SPY --
+   range=max          404 Punkte, 1993-02-01 bis 2026-08-28, letzter Abstand 27.7 Tage, Luecken 0, adjclose ja
+   range=10y         2514 Punkte, 2016-08-29 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   range=5y          1255 Punkte, 2021-08-30 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 1970    8453 Punkte, 1993-01-29 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 2005    5448 Punkte, 2005-01-03 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+-- BTC-USD --
+   range=max          144 Punkte, 2014-10-01 bis 2026-08-29, letzter Abstand 28.5 Tage, Luecken 0, adjclose ja
+   range=10y         3653 Punkte, 2016-08-29 bis 2026-08-29, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   range=5y          1827 Punkte, 2021-08-29 bis 2026-08-29, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 1970    4365 Punkte, 2014-09-17 bis 2026-08-29, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 2005    4365 Punkte, 2014-09-17 bis 2026-08-29, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+-- SAP.DE --
+   range=max          341 Punkte, 1998-04-30 bis 2026-08-28, letzter Abstand 27.7 Tage, Luecken 0, adjclose ja
+   range=10y         2542 Punkte, 2016-08-29 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   range=5y          1275 Punkte, 2021-08-30 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 1970    7264 Punkte, 1998-04-09 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+   period ab 2005    5507 Punkte, 2005-01-03 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 1, adjclose ja
+-- GC=F --
+   range=max          267 Punkte, 2000-09-01 bis 2026-08-28, letzter Abstand 27.7 Tage, Luecken 0, adjclose ja
+   range=10y         2517 Punkte, 2016-08-29 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 5, adjclose ja
+   range=5y          1260 Punkte, 2021-08-30 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 4, adjclose ja
+   period ab 1970    6607 Punkte, 2000-08-30 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 85, adjclose ja
+   period ab 2005    5474 Punkte, 2005-01-03 bis 2026-08-28, letzter Abstand 1.0 Tage, Luecken 32, adjclose ja
