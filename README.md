@@ -1,7 +1,7 @@
 # Don Elias Aktien Agent, Datensammler
 
 Dieses Repository sammelt jeden Tag automatisch Kurse fuer Aktien, ETFs,
-Rohstoffe und Krypto, rechnet daraus Kennzahlen und legt die Ergebnisse als
+Rohstoffe und Krypto von Yahoo Finance, rechnet daraus Kennzahlen und legt die Ergebnisse als
 CSV, JSON und Markdown ab. Der KI Agent in Claude liest diese Dateien
 anschliessend, bewertet die Lage und schickt den Tagesreport per Mail.
 
@@ -31,10 +31,10 @@ Die Arbeitsteilung ist bewusst so geschnitten:
    weil er die komplette Historie holt.
 6. Danach laeuft der Zeitplan taeglich um 04:30 UTC von allein.
 
-Optional: Ein kostenloser CoinGecko Demo Schluessel macht die Kryptoabrufe
-stabiler. Falls vorhanden, unter **Settings**, **Secrets and variables**,
-**Actions** als `COINGECKO_API_KEY` hinterlegen. Ohne Schluessel funktioniert
-es ebenfalls, nur langsamer gedrosselt.
+Optional: Ein kostenloser CoinGecko Demo Schluessel macht die Abfrage der
+groessten Coins stabiler. Falls vorhanden, unter **Settings**, **Secrets and
+variables**, **Actions** als `COINGECKO_API_KEY` hinterlegen. Ohne Schluessel
+funktioniert es ebenfalls.
 
 ## Was der Agent liest
 
@@ -69,11 +69,18 @@ Plausibilitaetspruefung, kein Renditeversprechen.
 ## Bekannte Grenzen
 
 - Tagesschlusskurse, keine Echtzeitdaten.
-- stooq und CoinGecko sind kostenlose Quellen ohne Verfuegbarkeitszusage.
-  Einzelne Symbole koennen ausfallen. Jeder Report weist die Ausfaelle aus,
-  statt sie zu verschweigen.
-- Deutsche Symbole bei stooq sind nicht fuer jeden DAX Wert vorhanden. Die
-  Fehlerliste des ersten Laufs zeigt, welche gestrichen werden muessen.
+- Yahoo Finance ist eine kostenlose Quelle ohne Verfuegbarkeitszusage und ohne
+  offiziell dokumentierte Schnittstelle. Einzelne Symbole koennen ausfallen.
+  Jeder Report weist die Ausfaelle namentlich aus, statt sie zu verschweigen.
+- Gemessen am 29.08.2026: 40 Abrufe in Folge, alle erfolgreich, 6 Sekunden.
+  Der Sammler wartet trotzdem 0,2 Sekunden zwischen den Abrufen.
+- Abgefragt wird immer ueber period1 und period2. Mit range=max liefert Yahoo
+  stillschweigend Monatswerte statt Tageskurse, AAPL etwa 168 statt 11520
+  Punkte. Diese Falle ist im Code umgangen und darf nicht rueckgaengig
+  gemacht werden.
+- Nicht jeder Coin aus der CoinGecko Rangliste existiert bei Yahoo unter
+  Kuerzel plus USD. Solche Faelle stehen in der Fehlerliste und koennen in
+  `agent/universe.py` unter CRYPTO_SKIP eingetragen werden.
 - GitHub deaktiviert geplante Workflows nach 60 Tagen ohne Repository
   Aktivitaet und verschickt vorher eine Mail. Ein manueller Commit oder ein
   Klick auf "Run workflow" reaktiviert sie.
