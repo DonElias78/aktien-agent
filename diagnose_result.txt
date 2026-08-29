@@ -1,0 +1,13 @@
+Diagnose vom 2026-08-29T11:15:32.191473 UTC
+OK    kontrolle example.com: HTTP 200, 150 Bytes | b'<!doctype html><html lang="en"><head><title>Example Domain</title><link rel="icon" href="data:,"><meta name="v'
+OK    stooq bot UA: HTTP 200, 150 Bytes | b'<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"></head><body><'
+OK    stooq browser UA: HTTP 200, 150 Bytes | b'<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"></head><body><'
+OK    stooq startseite: HTTP 200, 150 Bytes | b'<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"></head><body><'
+OK    stooq pl domain: HTTP 200, 150 Bytes | b'<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"></head><body><'
+OK    coingecko ping bot UA: HTTP 200, 34 Bytes | b'{"gecko_says":"(V3) To the Moon!"}'
+OK    coingecko ping browser UA: HTTP 200, 34 Bytes | b'{"gecko_says":"(V3) To the Moon!"}'
+OK    coingecko preis: HTTP 200, 25 Bytes | b'{"bitcoin":{"usd":77705}}'
+OK    yahoo chart: HTTP 200, 150 Bytes | b'{"chart":{"result":[{"meta":{"currency":"USD","symbol":"AAPL","exchangeName":"NMS","fullExchangeName":"NasdaqG'
+OK    frankfurter fx: HTTP 200, 150 Bytes | b'{"amount":1.0,"base":"EUR","date":"2026-08-28","rates":{"AUD":1.6183,"BRL":6.0126,"CAD":1.613,"CHF":0.9364,"CN'
+HTTP  binance klines: 451 | b'{\n  "code": 0,\n  "msg": "Service unavailable from a restricted location according to \'b. Eligibility\' in https://www.binance.com/en/terms. Please cont'
+OK    coinbase spot: HTTP 200, 61 Bytes | b'{"data":{"amount":"77719.215","base":"BTC","currency":"USD"}}'
