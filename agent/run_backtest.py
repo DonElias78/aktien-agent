@@ -34,22 +34,22 @@ def load_panel(classes: set[str], start: str) -> tuple[pd.DataFrame, dict]:
     """Baut eine Kursmatrix Datum x Symbol aus data/history/."""
     meta = {}
     us = universe._US_FALLBACK  # ohne Netz: feste Liste als Klassenzuordnung
-    for a in universe.build_stooq_universe(us):
+    for a in universe.build_universe(us):
         meta[storage.safe_name(a.key)] = a
     series = {}
     for path in sorted(storage.HISTORY.glob("*.csv")):
         stem = path.stem
-        if stem.startswith("crypto_"):
-            cls = "krypto"
-            investable = True
+        a = meta.get(stem)
+        if a is not None:
+            cls, investable = a.asset_class, a.investable
+        elif stem.endswith("-usd"):
+            cls, investable = "krypto", True
+        elif stem.endswith(".de"):
+            cls, investable = "aktie_de", True
+        elif stem.startswith("_"):
+            cls, investable = "index", False
         else:
-            a = meta.get(stem)
-            if a is None:
-                # Symbol nicht im aktuellen Universum, Klasse aus Endung raten
-                cls = "aktie_us" if stem.endswith(".us") else "sonstige"
-                investable = True
-            else:
-                cls, investable = a.asset_class, a.investable
+            cls, investable = "aktie_us", True
         if cls not in classes or not investable:
             continue
         df = pd.read_csv(path)
@@ -178,7 +178,7 @@ def main() -> int:
             if best is None or st.get("sharpe", -9) > best[0].get("sharpe", -9):
                 best = (st, res)
 
-    bench = {sym: buy_and_hold(panel, sym) for sym in ("spy.us", "qqq.us", "gld.us")}
+    bench = {sym: buy_and_hold(panel, sym) for sym in ("spy", "qqq", "gld", "btc-usd")}
     bench = {k: v for k, v in bench.items() if v}
 
     storage.REPORTS.mkdir(parents=True, exist_ok=True)
@@ -218,8 +218,11 @@ def main() -> int:
                  "jede Rueckrechnung, teils deutlich.")
     lines.append("- Look ahead auf Universumsebene: Die Auswahl der Werte kennt die Gegenwart, "
                  "die Regel selbst nicht.")
-    lines.append("- Dividenden sind in den stooq Schlusskursen nicht als Wiederanlage enthalten. "
-                 "Dividendenstarke Werte und Vergleichsindizes werden dadurch zu schlecht dargestellt.")
+    lines.append("- Gerechnet wird auf dividendenbereinigten Kursen von Yahoo. Dividenden gelten "
+                 "damit als sofort wieder angelegt, ohne Steuerabzug. Real faellt auf Ausschuettungen "
+                 "Steuer an, die Rueckrechnung liegt dadurch ueber der erreichbaren Rendite.")
+    lines.append("- Preisindizes wie der DAX Kursindex und Rohstofffutures kennen keine Dividende. "
+                 "Ein Vergleich zwischen Klassen hinkt deshalb systematisch.")
     lines.append("- Steuern, Spreads und Slippage sind ausser den pauschalen Kosten nicht modelliert.")
     lines.append("- Mehrere Varianten auf denselben Daten getestet heisst: die beste Variante "
                  "ist teilweise Zufall. Ein Vorsprung von wenigen Zehntel im Sharpe ist kein Beweis.")

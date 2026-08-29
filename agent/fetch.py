@@ -1,31 +1,38 @@
 """Datenbeschaffung fuer den Don Elias Aktien Agenten.
 
-Zwei Quellen:
-  stooq.com    Tages OHLCV als CSV, kein Key, inkrementell per Datumsfilter
-  CoinGecko    Tageskurse fuer Krypto, Demo Tier ohne Key moeglich
+Kursquelle ist Yahoo Finance. Die Entscheidung ist gemessen, nicht geraten:
+stooq beantwortet Anfragen aus Rechenzentren mit einer HTML Sperrseite statt
+mit CSV, CoinGecko begrenzt die Historie im Gratistarif auf 365 Tage.
+Yahoo liefert Aktien, ETFs, Indizes, Rohstoffe, Devisen und Krypto aus einer
+Hand, dividendenbereinigt und mit voller Tageshistorie.
 
-Jeder Abruf ist gedrosselt und wird bei Fehlern wiederholt. Fehlschlaege
-werden nicht verschluckt, sondern als Liste zurueckgegeben, damit der
-Tagesreport sie ausweist.
+Wichtig: Yahoo ignoriert bei range=max den Tagesabstand und antwortet mit
+Monatswerten. Deshalb wird ausschliesslich ueber period1 und period2
+abgefragt. Das ist nachgemessen: AAPL liefert so 11520 Tageskurse ab 1980
+statt 168 Monatswerten.
+
+CoinGecko wird nur noch fuer die Rangliste der groessten Coins benutzt.
 """
 
 from __future__ import annotations
 
-import io
+import json
 import os
-import time
 import random
+import time
 import datetime as dt
+import urllib.parse
 
 import pandas as pd
 import requests
 
-STOOQ_URL = "https://stooq.com/q/d/l/"
+YAHOO_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{}"
 CG_URL = "https://api.coingecko.com/api/v3"
 
-USER_AGENT = "don-elias-aktien-agent/1.0 (+github actions)"
+USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 
-STOOQ_SLEEP = float(os.getenv("STOOQ_SLEEP", "0.6"))
+YAHOO_SLEEP = float(os.getenv("YAHOO_SLEEP", "0.2"))
 CG_SLEEP = float(os.getenv("CG_SLEEP", "3.0"))
 
 
@@ -35,19 +42,27 @@ class FetchError(Exception):
 
 def _session() -> requests.Session:
     s = requests.Session()
-    s.headers.update({"User-Agent": USER_AGENT})
+    s.headers.update({"User-Agent": USER_AGENT, "Accept": "application/json"})
     return s
 
 
-def _get(session: requests.Session, url: str, params: dict, tries: int = 4) -> str:
+def _get(session: requests.Session, url: str, params: dict | None = None,
+         tries: int = 3) -> str:
     last = None
     for attempt in range(tries):
         try:
             r = session.get(url, params=params, timeout=40)
             if r.status_code == 429:
-                raise FetchError("429 rate limit")
+                raise FetchError("429 Drosselung")
+            if r.status_code == 404:
+                raise FetchError("404 Symbol unbekannt")
             r.raise_for_status()
             return r.text
+        except FetchError as exc:
+            if "404" in str(exc):
+                raise
+            last = exc
+            time.sleep((2 ** attempt) + random.random())
         except Exception as exc:  # noqa: BLE001
             last = exc
             time.sleep((2 ** attempt) + random.random())
@@ -55,76 +70,78 @@ def _get(session: requests.Session, url: str, params: dict, tries: int = 4) -> s
 
 
 # ---------------------------------------------------------------------------
-# stooq
+# Yahoo Finance
 # ---------------------------------------------------------------------------
 
-def fetch_stooq(session: requests.Session, symbol: str,
+def fetch_yahoo(session: requests.Session, symbol: str,
                 start: dt.date | None = None) -> pd.DataFrame:
-    """Tages OHLCV. start=None laedt die komplette verfuegbare Historie."""
-    params = {"s": symbol, "i": "d"}
-    if start:
-        params["d1"] = start.strftime("%Y%m%d")
-        params["d2"] = dt.date.today().strftime("%Y%m%d")
-    text = _get(session, STOOQ_URL, params)
-    if not text.lstrip().lower().startswith("date"):
-        if "exceed" in text[:300].lower():
-            raise FetchError(f"stooq Tageslimit erreicht bei {symbol}: {text[:80]}")
-        raise FetchError(f"stooq lieferte kein CSV fuer {symbol}: {text[:80]}")
-    df = pd.read_csv(io.StringIO(text))
-    if df.empty:
-        return df
-    df.columns = [c.strip().lower() for c in df.columns]
-    keep = [c for c in ("date", "open", "high", "low", "close", "volume") if c in df.columns]
-    df = df[keep].copy()
-    df["date"] = pd.to_datetime(df["date"], errors="coerce")
-    df = df.dropna(subset=["date", "close"]).sort_values("date")
-    time.sleep(STOOQ_SLEEP)
-    return df
+    """Tageskurse. start=None laedt die komplette verfuegbare Historie.
+
+    Rueckgabe: date, open, high, low, close (dividendenbereinigt),
+    close_raw (unbereinigt), volume
+    """
+    period1 = 0 if start is None else int(
+        dt.datetime.combine(start, dt.time()).timestamp())
+    params = {
+        "period1": str(max(period1, 0)),
+        "period2": str(int(time.time()) + 86400),
+        "interval": "1d",
+        "events": "div,split",
+        "includeAdjustedClose": "true",
+    }
+    text = _get(session, YAHOO_URL.format(urllib.parse.quote(symbol)), params)
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise FetchError(f"Antwort ist kein JSON: {text[:80]}") from exc
+
+    chart = payload.get("chart") or {}
+    if chart.get("error"):
+        raise FetchError(str(chart["error"])[:120])
+    results = chart.get("result") or []
+    if not results:
+        raise FetchError("leere Antwort")
+    res = results[0]
+    ts = res.get("timestamp") or []
+    if not ts:
+        raise FetchError("keine Zeitreihe enthalten")
+
+    quote = (res.get("indicators", {}).get("quote") or [{}])[0]
+    adj = (res.get("indicators", {}).get("adjclose") or [{}])[0].get("adjclose")
+
+    df = pd.DataFrame({
+        "date": [pd.Timestamp(dt.datetime.fromtimestamp(t, dt.timezone.utc).date())
+                 for t in ts],
+        "open": quote.get("open"),
+        "high": quote.get("high"),
+        "low": quote.get("low"),
+        "close_raw": quote.get("close"),
+        "volume": quote.get("volume"),
+    })
+    df["close"] = adj if adj is not None else df["close_raw"]
+
+    # Yahoo liefert einzelne Tage ohne Kurs, etwa Feiertage an Terminboersen.
+    df = df.dropna(subset=["close"])
+    df = df.drop_duplicates(subset="date", keep="last").sort_values("date")
+    time.sleep(YAHOO_SLEEP)
+    return df.reset_index(drop=True)
 
 
 # ---------------------------------------------------------------------------
-# CoinGecko
+# CoinGecko, nur fuer die Rangliste der groessten Coins
 # ---------------------------------------------------------------------------
 
-def _cg_params(extra: dict) -> dict:
+def fetch_top_coins(session: requests.Session, top_n: int,
+                    exclude: set[str]) -> list[dict]:
+    """Liefert die groessten Coins nach Marktkapitalisierung."""
+    params = {"vs_currency": "usd", "order": "market_cap_desc",
+              "per_page": str(min(max(top_n * 2, 10), 250)), "page": "1"}
     key = os.getenv("COINGECKO_API_KEY", "").strip()
     if key:
-        extra = dict(extra)
-        extra["x_cg_demo_api_key"] = key
-    return extra
-
-
-def fetch_top_coins(session: requests.Session, top_n: int, exclude: set[str]) -> list[dict]:
-    text = _get(session, f"{CG_URL}/coins/markets", _cg_params({
-        "vs_currency": "usd", "order": "market_cap_desc",
-        "per_page": str(min(top_n * 2, 250)), "page": "1",
-        "price_change_percentage": "24h,7d,30d",
-    }))
-    import json
+        params["x_cg_demo_api_key"] = key
+    text = _get(session, f"{CG_URL}/coins/markets", params)
     rows = json.loads(text)
-    out = [r for r in rows if r.get("id") not in exclude]
+    out = [r for r in rows
+           if r.get("id") not in exclude and r.get("symbol")]
     time.sleep(CG_SLEEP)
     return out[:top_n]
-
-
-def fetch_coin_history(session: requests.Session, coin_id: str, days: str = "max") -> pd.DataFrame:
-    text = _get(session, f"{CG_URL}/coins/{coin_id}/market_chart", _cg_params({
-        "vs_currency": "usd", "days": days, "interval": "daily",
-    }))
-    import json
-    payload = json.loads(text)
-    prices = payload.get("prices") or []
-    vols = dict((int(t), v) for t, v in (payload.get("total_volumes") or []))
-    rows = []
-    for ts, price in prices:
-        d = dt.datetime.fromtimestamp(ts / 1000, dt.timezone.utc).date()
-        rows.append({"date": pd.Timestamp(d), "close": price,
-                     "volume": vols.get(int(ts), float("nan"))})
-    df = pd.DataFrame(rows)
-    if not df.empty:
-        df = df.drop_duplicates(subset="date", keep="last").sort_values("date")
-        df["open"] = df["close"]
-        df["high"] = df["close"]
-        df["low"] = df["close"]
-    time.sleep(CG_SLEEP)
-    return df

@@ -29,16 +29,17 @@ LOOKBACK_REFRESH_DAYS = 10   # so viele Tage werden bei jedem Lauf neu geholt
 MIN_DAYS_FOR_SCORE = 260     # weniger Historie, kein Score
 
 
-def collect_stooq(session, assets, full_history: bool):
+def collect(session, assets, full_history: bool, fortschritt_alle: int = 50):
+    """Holt alle Werte bei Yahoo, inkrementell wenn schon Historie da ist."""
     ok, failed = [], []
-    for a in assets:
+    for i, a in enumerate(assets, 1):
         try:
             old = storage.load_history(a.key)
             start = None
             if not full_history and not old.empty:
                 last = pd.to_datetime(old["date"]).max().date()
                 start = last - dt.timedelta(days=LOOKBACK_REFRESH_DAYS)
-            new = fetch.fetch_stooq(session, a.query, start=start)
+            new = fetch.fetch_yahoo(session, a.query, start=start)
             merged = storage.merge_history(old, new)
             if merged.empty:
                 failed.append((a.key, "keine Daten"))
@@ -47,32 +48,27 @@ def collect_stooq(session, assets, full_history: bool):
             ok.append((a, merged))
         except Exception as exc:  # noqa: BLE001
             failed.append((a.key, str(exc)[:120]))
+        if i % fortschritt_alle == 0:
+            print(f"  {i}/{len(assets)} verarbeitet, {len(failed)} Fehler", flush=True)
     return ok, failed
 
 
-def collect_crypto(session, top_n: int, full_history: bool):
-    ok, failed = [], []
+def crypto_assets(session, top_n: int):
+    """Fragt bei CoinGecko die groessten Coins ab und uebersetzt sie auf Yahoo."""
     try:
         coins = fetch.fetch_top_coins(session, top_n, universe.STABLECOINS)
     except Exception as exc:  # noqa: BLE001
-        return ok, [("coingecko/markets", str(exc)[:160])]
+        return [], [("coingecko/markets", str(exc)[:160])]
+    assets, skipped = [], []
     for c in coins:
-        key = f"crypto_{c['id']}"
-        asset = universe.Asset(key, "coingecko", c["id"],
-                               c.get("symbol", "").upper(), "krypto")
-        try:
-            old = storage.load_history(key)
-            days = "max" if (full_history or old.empty) else "90"
-            new = fetch.fetch_coin_history(session, c["id"], days=days)
-            merged = storage.merge_history(old, new)
-            if merged.empty:
-                failed.append((key, "keine Daten"))
-                continue
-            storage.save_history(key, merged)
-            ok.append((asset, merged))
-        except Exception as exc:  # noqa: BLE001
-            failed.append((key, str(exc)[:120]))
-    return ok, failed
+        sym = universe.crypto_symbol(c.get("symbol", ""))
+        if sym.split("-")[0] in universe.CRYPTO_SKIP:
+            skipped.append((sym, "bewusst uebersprungen, bei Yahoo nicht vorhanden"))
+            continue
+        assets.append(universe.Asset(sym, "yahoo", sym,
+                                     c.get("name") or c.get("symbol", "").upper(),
+                                     "krypto"))
+    return assets, skipped
 
 
 def build_rows(collected):
@@ -151,10 +147,10 @@ def write_report(path, today, rows, failed, duration, stale):
             lines.append(f"- ... und {len(failed) - 40} weitere")
         lines.append("")
     lines.append("---")
-    lines.append("Kursquellen: stooq.com (Aktien, ETFs, Rohstoffe), "
-                 "api.coingecko.com (Krypto). Tagesschlusskurse, keine "
-                 "Echtzeitdaten. Diese Auswertung ist Statistik, keine "
-                 "Anlageberatung.")
+    lines.append("Kursquelle: Yahoo Finance, dividendenbereinigte "
+                 "Tagesschlusskurse. Die Rangliste der groessten Coins kommt "
+                 "von CoinGecko. Keine Echtzeitdaten. Diese Auswertung ist "
+                 "Statistik, keine Anlageberatung.")
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -172,19 +168,25 @@ def main() -> int:
     session = fetch._session()
 
     us = universe.load_us_tickers(session)
-    assets = universe.build_stooq_universe(us)
+    assets = universe.build_universe(us)
     if args.limit:
         assets = assets[: args.limit]
-    print(f"Universum stooq: {len(assets)} Werte", flush=True)
 
-    ok, failed = collect_stooq(session, assets, args.full_history)
-    print(f"stooq fertig: {len(ok)} ok, {len(failed)} Fehler", flush=True)
-
+    failed: list[tuple[str, str]] = []
     if not args.no_crypto:
-        c_ok, c_failed = collect_crypto(session, universe.CRYPTO_TOP_N, args.full_history)
-        print(f"crypto fertig: {len(c_ok)} ok, {len(c_failed)} Fehler", flush=True)
-        ok += c_ok
+        c_assets, c_failed = crypto_assets(session, universe.CRYPTO_TOP_N)
+        assets += c_assets
         failed += c_failed
+        print(f"Krypto aus CoinGecko: {len(c_assets)} Coins", flush=True)
+
+    print(f"Universum: {len(assets)} Werte", flush=True)
+    ok, f2 = collect(session, assets, args.full_history)
+    failed += f2
+    print(f"Abruf fertig: {len(ok)} ok, {len(failed)} Fehler", flush=True)
+    for key, msg in failed[:25]:
+        print(f"  FEHLER {key}: {msg}", flush=True)
+    if len(failed) > 25:
+        print(f"  ... und {len(failed) - 25} weitere", flush=True)
 
     rows = build_rows(ok)
     if not rows:
@@ -218,7 +220,9 @@ def main() -> int:
         "benchmarks": {r["key"]: {"ret_21d": r.get("ret_21d"),
                                   "ret_252d": r.get("ret_252d"),
                                   "close": r.get("close")}
-                       for r in rows if r["key"] in ("^spx", "^dax", "spy.us", "xauusd")},
+                       for r in rows
+                       if r["key"] in ("^GSPC", "^GDAXI", "SPY", "GC=F",
+                                       "BTC-USD", "^VIX")},
     }
     (storage.ROOT / "data" / "latest_signals.json").write_text(
         json.dumps(signals, indent=2, default=str), encoding="utf-8")

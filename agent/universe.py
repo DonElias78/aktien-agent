@@ -1,11 +1,12 @@
 """Definiert das Anlageuniversum fuer den Don Elias Aktien Agenten.
 
-Quellen der Symbole:
-  Aktien und ETFs: stooq.com (kostenlose Tages CSV, kein API Key)
-  Krypto:          api.coingecko.com (Demo Tier, kein API Key noetig)
-
-Jedes Symbol traegt eine Assetklasse und ein Kennzeichen, ob es investierbar
-ist. Indizes werden mitgefuehrt, aber nie als Kaufkandidat geranked.
+Alle Kurse kommen von Yahoo Finance, deshalb tragen alle Werte Yahoo Symbole:
+  US Aktien und ETFs   schlichtes Kuerzel, Punkte werden zu Bindestrichen
+  Deutsche Aktien      Kuerzel mit Endung .DE
+  Indizes              mit vorangestelltem Dach, etwa ^GSPC
+  Rohstoffe            Futures mit Endung =F, etwa GC=F fuer Gold
+  Devisen              Endung =X
+  Krypto               Kuerzel plus -USD, etwa BTC-USD
 """
 
 from dataclasses import dataclass, asdict
@@ -14,8 +15,8 @@ from dataclasses import dataclass, asdict
 @dataclass(frozen=True)
 class Asset:
     key: str            # eindeutiger Schluessel im Datensatz
-    source: str         # "stooq" oder "coingecko"
-    query: str          # Symbol bzw. ID an der Quelle
+    source: str         # "yahoo"
+    query: str          # Symbol bei Yahoo
     name: str
     asset_class: str    # aktie_us | aktie_de | etf | rohstoff | index | fx | krypto
     investable: bool = True
@@ -25,70 +26,81 @@ class Asset:
 
 
 # ---------------------------------------------------------------------------
-# ETFs, Rohstoffe, Indizes, FX  (stooq)
+# ETFs, Rohstoffe, Indizes, Devisen
 # ---------------------------------------------------------------------------
 
 _ETFS = {
-    "spy": "SPDR S&P 500 ETF", "qqq": "Invesco QQQ Nasdaq 100",
-    "dia": "SPDR Dow Jones", "iwm": "iShares Russell 2000",
-    "vti": "Vanguard Total Stock Market", "voo": "Vanguard S&P 500",
-    "efa": "iShares MSCI EAFE", "eem": "iShares MSCI Emerging Markets",
-    "vgk": "Vanguard FTSE Europe", "ewj": "iShares MSCI Japan",
-    "ewg": "iShares MSCI Germany", "inda": "iShares MSCI India",
-    "mchi": "iShares MSCI China", "acwi": "iShares MSCI ACWI",
-    "gld": "SPDR Gold Shares", "slv": "iShares Silver Trust",
-    "gdx": "VanEck Gold Miners", "uso": "United States Oil Fund",
-    "dbc": "Invesco DB Commodity", "pdbc": "Invesco Optimum Yield Commodity",
-    "tlt": "iShares 20+ Year Treasury", "ief": "iShares 7-10 Year Treasury",
-    "shy": "iShares 1-3 Year Treasury", "agg": "iShares Core US Aggregate Bond",
-    "bnd": "Vanguard Total Bond Market", "lqd": "iShares Investment Grade Corp",
-    "hyg": "iShares High Yield Corp", "tip": "iShares TIPS Bond",
-    "xle": "Energy Select Sector", "xlf": "Financial Select Sector",
-    "xlk": "Technology Select Sector", "xlv": "Health Care Select Sector",
-    "xly": "Consumer Discretionary Select", "xlp": "Consumer Staples Select",
-    "xli": "Industrial Select Sector", "xlu": "Utilities Select Sector",
-    "xlb": "Materials Select Sector", "xlre": "Real Estate Select Sector",
-    "xlc": "Communication Services Select",
-    "smh": "VanEck Semiconductor", "soxx": "iShares Semiconductor",
-    "arkk": "ARK Innovation", "ibit": "iShares Bitcoin Trust",
-    "vnq": "Vanguard Real Estate", "schd": "Schwab US Dividend Equity",
-    "vig": "Vanguard Dividend Appreciation", "vym": "Vanguard High Dividend",
-    "ijr": "iShares Core S&P Small Cap", "mdy": "SPDR S&P Midcap 400",
-    "efav": "iShares MSCI Min Volatility", "mtum": "iShares MSCI USA Momentum",
-    "qual": "iShares MSCI USA Quality", "vlue": "iShares MSCI USA Value",
+    "SPY": "SPDR S&P 500 ETF", "QQQ": "Invesco QQQ Nasdaq 100",
+    "DIA": "SPDR Dow Jones", "IWM": "iShares Russell 2000",
+    "VTI": "Vanguard Total Stock Market", "VOO": "Vanguard S&P 500",
+    "EFA": "iShares MSCI EAFE", "EEM": "iShares MSCI Emerging Markets",
+    "VGK": "Vanguard FTSE Europe", "EWJ": "iShares MSCI Japan",
+    "EWG": "iShares MSCI Germany", "INDA": "iShares MSCI India",
+    "MCHI": "iShares MSCI China", "ACWI": "iShares MSCI ACWI",
+    "GLD": "SPDR Gold Shares", "SLV": "iShares Silver Trust",
+    "GDX": "VanEck Gold Miners", "USO": "United States Oil Fund",
+    "DBC": "Invesco DB Commodity", "PDBC": "Invesco Optimum Yield Commodity",
+    "TLT": "iShares 20+ Year Treasury", "IEF": "iShares 7-10 Year Treasury",
+    "SHY": "iShares 1-3 Year Treasury", "AGG": "iShares Core US Aggregate Bond",
+    "BND": "Vanguard Total Bond Market", "LQD": "iShares Investment Grade Corp",
+    "HYG": "iShares High Yield Corp", "TIP": "iShares TIPS Bond",
+    "XLE": "Energy Select Sector", "XLF": "Financial Select Sector",
+    "XLK": "Technology Select Sector", "XLV": "Health Care Select Sector",
+    "XLY": "Consumer Discretionary Select", "XLP": "Consumer Staples Select",
+    "XLI": "Industrial Select Sector", "XLU": "Utilities Select Sector",
+    "XLB": "Materials Select Sector", "XLRE": "Real Estate Select Sector",
+    "XLC": "Communication Services Select",
+    "SMH": "VanEck Semiconductor", "SOXX": "iShares Semiconductor",
+    "ARKK": "ARK Innovation", "IBIT": "iShares Bitcoin Trust",
+    "VNQ": "Vanguard Real Estate", "SCHD": "Schwab US Dividend Equity",
+    "VIG": "Vanguard Dividend Appreciation", "VYM": "Vanguard High Dividend",
+    "IJR": "iShares Core S&P Small Cap", "MDY": "SPDR S&P Midcap 400",
+    "USMV": "iShares MSCI Min Volatility", "MTUM": "iShares MSCI USA Momentum",
+    "QUAL": "iShares MSCI USA Quality", "VLUE": "iShares MSCI USA Value",
 }
 
 _ROHSTOFFE = {
-    "xauusd": "Gold Spot USD", "xagusd": "Silber Spot USD",
-    "xptusd": "Platin Spot USD", "xpdusd": "Palladium Spot USD",
-    "cl.f": "Rohoel WTI Future", "ng.f": "Erdgas Future",
-    "hg.f": "Kupfer Future",
+    "GC=F": "Gold Future", "SI=F": "Silber Future",
+    "PL=F": "Platin Future", "PA=F": "Palladium Future",
+    "CL=F": "Rohoel WTI Future", "BZ=F": "Rohoel Brent Future",
+    "NG=F": "Erdgas Future", "HG=F": "Kupfer Future",
+    "ZC=F": "Mais Future", "ZW=F": "Weizen Future",
 }
 
 _INDIZES = {
-    "^spx": "S&P 500", "^ndq": "Nasdaq 100", "^dji": "Dow Jones",
-    "^dax": "DAX", "^sx5e": "Euro Stoxx 50", "^nkx": "Nikkei 225",
-    "^vix": "VIX Volatilitaetsindex",
+    "^GSPC": "S&P 500", "^NDX": "Nasdaq 100", "^DJI": "Dow Jones",
+    "^GDAXI": "DAX", "^STOXX50E": "Euro Stoxx 50", "^N225": "Nikkei 225",
+    "^VIX": "VIX Volatilitaetsindex", "^TNX": "US Rendite 10 Jahre",
 }
 
 _FX = {
-    "eurusd": "EUR/USD", "usdjpy": "USD/JPY", "dx.f": "US Dollar Index Future",
+    "EURUSD=X": "EUR/USD", "JPY=X": "USD/JPY", "DX-Y.NYB": "US Dollar Index",
 }
 
 # ---------------------------------------------------------------------------
-# Deutsche Aktien (DAX 40) bei stooq mit Suffix .de
+# DAX 40, Yahoo Symbole mit Endung .DE
 # ---------------------------------------------------------------------------
 
-_DAX = [
-    "ads", "air", "alv", "bas", "bayn", "bei", "bmw", "bnr", "cbk", "con",
-    "1cov", "db1", "dbk", "dhl", "dte", "dtg", "enr", "eoan", "fme", "fre",
-    "hei", "hen3", "hnr1", "ifx", "mbg", "mrk", "mtx", "muv2", "p911", "pah3",
-    "qia", "rhm", "rwe", "sap", "shl", "sie", "srt3", "sy1", "vna", "vow3",
-    "zal",
-]
+_DAX = {
+    "ADS.DE": "Adidas", "AIR.DE": "Airbus", "ALV.DE": "Allianz",
+    "BAS.DE": "BASF", "BAYN.DE": "Bayer", "BEI.DE": "Beiersdorf",
+    "BMW.DE": "BMW", "BNR.DE": "Brenntag", "CBK.DE": "Commerzbank",
+    "CON.DE": "Continental", "1COV.DE": "Covestro", "DB1.DE": "Deutsche Boerse",
+    "DBK.DE": "Deutsche Bank", "DHL.DE": "DHL Group", "DTE.DE": "Deutsche Telekom",
+    "DTG.DE": "Daimler Truck", "ENR.DE": "Siemens Energy", "EOAN.DE": "E.ON",
+    "FME.DE": "Fresenius Medical Care", "FRE.DE": "Fresenius",
+    "HEI.DE": "Heidelberg Materials", "HEN3.DE": "Henkel", "HNR1.DE": "Hannover Rueck",
+    "IFX.DE": "Infineon", "MBG.DE": "Mercedes Benz", "MRK.DE": "Merck",
+    "MTX.DE": "MTU Aero Engines", "MUV2.DE": "Muenchener Rueck",
+    "P911.DE": "Porsche AG", "PAH3.DE": "Porsche Holding", "QIA.DE": "Qiagen",
+    "RHM.DE": "Rheinmetall", "RWE.DE": "RWE", "SAP.DE": "SAP",
+    "SHL.DE": "Siemens Healthineers", "SIE.DE": "Siemens",
+    "SRT3.DE": "Sartorius", "SY1.DE": "Symrise", "VNA.DE": "Vonovia",
+    "VOW3.DE": "Volkswagen", "ZAL.DE": "Zalando",
+}
 
 # ---------------------------------------------------------------------------
-# US Aktien: Liste wird zur Laufzeit geladen, Fallback ist fest verdrahtet
+# US Aktien, Liste wird zur Laufzeit geladen, feste Liste als Rueckfallebene
 # ---------------------------------------------------------------------------
 
 _SP500_CSV = (
@@ -111,9 +123,9 @@ _US_FALLBACK = [
 ]
 
 
-def _stooq_us(ticker: str) -> str:
-    """AAPL -> aapl.us, BRK.B -> brk-b.us"""
-    return ticker.strip().lower().replace(".", "-") + ".us"
+def _yahoo_us(ticker: str) -> str:
+    """AAPL bleibt AAPL, BRK.B wird BRK-B."""
+    return ticker.strip().upper().replace(".", "-")
 
 
 def load_us_tickers(session=None, limit: int | None = None) -> list[str]:
@@ -129,35 +141,48 @@ def load_us_tickers(session=None, limit: int | None = None) -> list[str]:
         tickers = [r["Symbol"] for r in rows if r.get("Symbol")]
     except Exception:
         tickers = []
-    # Fallback und Ergaenzung um Werte ausserhalb des S&P 500
     merged = list(dict.fromkeys(tickers + _US_FALLBACK))
     if limit:
         merged = merged[:limit]
     return merged
 
 
-# Krypto: Anzahl der Top Coins nach Marktkapitalisierung
+# Krypto
 CRYPTO_TOP_N = 40
 
-# Coins, die als Stablecoin gelten und aus dem Ranking fliegen
 STABLECOINS = {
     "tether", "usd-coin", "dai", "first-digital-usd", "true-usd",
     "binance-usd", "paypal-usd", "usds", "ethena-usde", "usdd", "frax",
+    "blackrock-usd-institutional-digital-liquidity-fund", "usual-usd",
 }
 
+# Coins, die es bei Yahoo nicht unter Kuerzel-USD gibt, werden nach dem
+# ersten Lauf hier ausgeschlossen. Die Fehlerliste des Reports zeigt sie an.
+CRYPTO_SKIP = {"STETH", "WSTETH", "WBETH", "WEETH", "WBTC", "LEO", "CBBTC"}
 
-def build_stooq_universe(us_tickers: list[str]) -> list[Asset]:
+
+def crypto_symbol(coin_symbol: str) -> str:
+    return f"{coin_symbol.strip().upper()}-USD"
+
+
+def build_universe(us_tickers: list[str]) -> list[Asset]:
+    """Baut das komplette Universum ohne Krypto, das kommt zur Laufzeit dazu."""
     assets: list[Asset] = []
     for t in us_tickers:
-        assets.append(Asset(_stooq_us(t), "stooq", _stooq_us(t), t, "aktie_us"))
-    for t in _DAX:
-        assets.append(Asset(f"{t}.de", "stooq", f"{t}.de", t.upper(), "aktie_de"))
+        sym = _yahoo_us(t)
+        assets.append(Asset(sym, "yahoo", sym, t, "aktie_us"))
+    for sym, name in _DAX.items():
+        assets.append(Asset(sym, "yahoo", sym, name, "aktie_de"))
     for sym, name in _ETFS.items():
-        assets.append(Asset(_stooq_us(sym), "stooq", _stooq_us(sym), name, "etf"))
+        assets.append(Asset(sym, "yahoo", sym, name, "etf"))
     for sym, name in _ROHSTOFFE.items():
-        assets.append(Asset(sym, "stooq", sym, name, "rohstoff"))
+        assets.append(Asset(sym, "yahoo", sym, name, "rohstoff"))
     for sym, name in _FX.items():
-        assets.append(Asset(sym, "stooq", sym, name, "fx", investable=False))
+        assets.append(Asset(sym, "yahoo", sym, name, "fx", investable=False))
     for sym, name in _INDIZES.items():
-        assets.append(Asset(sym, "stooq", sym, name, "index", investable=False))
+        assets.append(Asset(sym, "yahoo", sym, name, "index", investable=False))
     return assets
+
+
+# Alter Name, damit bestehende Aufrufe nicht brechen
+build_stooq_universe = build_universe

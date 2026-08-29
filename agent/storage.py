@@ -17,7 +17,7 @@ HISTORY = ROOT / "data" / "history"
 SNAPSHOTS = ROOT / "data" / "snapshots"
 REPORTS = ROOT / "reports"
 
-COLUMNS = ["date", "open", "high", "low", "close", "volume"]
+COLUMNS = ["date", "open", "high", "low", "close", "close_raw", "volume"]
 
 
 def safe_name(key: str) -> str:
