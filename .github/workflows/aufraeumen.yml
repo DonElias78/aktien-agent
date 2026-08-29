@@ -1,0 +1,39 @@
+name: Dateien einsortieren
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sortieren:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dateien an ihren Platz verschieben
+        run: |
+          set -e
+          for f in fetch.py universe.py storage.py run_daily.py run_backtest.py indicators.py; do
+            if [ -f "$f" ]; then
+              echo "verschiebe $f nach agent/$f"
+              mv -f "$f" "agent/$f"
+            fi
+          done
+          if [ -f test_offline.py ]; then
+            echo "verschiebe test_offline.py nach tests/"
+            mv -f test_offline.py tests/test_offline.py
+          fi
+          rm -f "__init__ (1).py" "__init__.py"
+          echo "--- Inhalt agent ---"
+          ls -l agent
+          echo "--- Groessen zur Kontrolle ---"
+          wc -c agent/fetch.py agent/universe.py agent/run_daily.py
+
+      - name: Ergebnis committen
+        run: |
+          git config user.name "don-elias-agent"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || (git commit -m "Dateien nach agent und tests einsortiert" && git push)
