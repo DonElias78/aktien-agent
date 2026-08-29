@@ -1,7 +1,7 @@
 # Backtest der Bewertungsregel
 
 Erstellt am 2026-08-29
-Universum: 559 Werte, Klassen ['aktie_us', 'etf']
+Universum: 53 Werte, Klassen ['etf']
 Zeitraum: 2005-01-03 bis 2026-08-28
 Handelskosten je Umschichtung: 10.0 Basispunkte auf den Umschlag
 
@@ -9,12 +9,12 @@ Handelskosten je Umschichtung: 10.0 Basispunkte auf den Umschlag
 
 | Top N | Trendfilter | CAGR | Vola p.a. | Sharpe | Max Drawdown | positive Monate | Monate |
 |---|---|---|---|---|---|---|---|
-| 5 | ja | 49.1% | 37.9% | 1.24 | -53.2% | 65% | 246 |
-| 5 | nein | 46.6% | 38.6% | 1.18 | -63.4% | 65% | 246 |
-| 10 | ja | 36.2% | 32.0% | 1.12 | -52.2% | 65% | 246 |
-| 10 | nein | 36.1% | 32.5% | 1.11 | -59.4% | 65% | 246 |
-| 20 | ja | 28.1% | 25.9% | 1.09 | -50.3% | 65% | 246 |
-| 20 | nein | 27.2% | 26.9% | 1.03 | -57.6% | 67% | 246 |
+| 5 | ja | 12.6% | 16.4% | 0.81 | -28.9% | 63% | 246 |
+| 5 | nein | 13.0% | 17.8% | 0.78 | -35.8% | 63% | 246 |
+| 10 | ja | 10.3% | 13.5% | 0.80 | -21.2% | 65% | 246 |
+| 10 | nein | 12.1% | 14.7% | 0.85 | -24.6% | 64% | 246 |
+| 20 | ja | 9.3% | 11.8% | 0.81 | -22.2% | 66% | 246 |
+| 20 | nein | 10.3% | 13.5% | 0.79 | -34.0% | 64% | 246 |
 
 ## Vergleich Kaufen und Halten
 
