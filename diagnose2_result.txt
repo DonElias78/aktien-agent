@@ -1,0 +1,18 @@
+Diagnose 2 vom 2026-08-29T11:29:09.315166 UTC
+== Yahoo Historie je Symboltyp ==
+OK    AAPL       US Aktie        168 Tage, 1984-12-01 bis 2026-08-28, letzter Kurs 319.70001220703125, adjclose: True
+OK    SAP.DE     DE Aktie        341 Tage, 1998-04-30 bis 2026-08-28, letzter Kurs 191.32000732421875, adjclose: True
+OK    SPY        ETF             404 Tage, 1993-02-01 bis 2026-08-28, letzter Kurs 769.3499755859375, adjclose: True
+OK    ^GSPC      Index SP500     168 Tage, 1984-12-01 bis 2026-08-28, letzter Kurs 7711.759765625, adjclose: True
+OK    ^GDAXI     Index DAX       156 Tage, 1987-11-30 bis 2026-08-28, letzter Kurs 26569.990234375, adjclose: True
+OK    GC=F       Gold Future     267 Tage, 2000-09-01 bis 2026-08-28, letzter Kurs 4529.89990234375, adjclose: True
+HTTP  XAUUSD=X   Gold Spot    404 | b'{"chart":{"result":null,"error":{"code":"Not Found","description":"No data found, symbol may be delisted"}}}'
+OK    BTC-USD    Krypto          144 Tage, 2014-10-01 bis 2026-08-29, letzter Kurs 77693.4296875, adjclose: True
+OK    EURUSD=X   Devisen         274 Tage, 2003-12-01 bis 2026-08-28, letzter Kurs 1.1587486267089844, adjclose: True
+== Yahoo Belastungstest, 40 Abrufe ohne Pause ==
+40 von 40 erfolgreich in 6 Sekunden
+== CoinGecko Historie, mit und ohne interval ==
+HTTP  mit interval=daily: 401 | b'{"error":{"status":{"timestamp":"2026-08-29T11:29:15.991+00:00","error_code":10012,"error_message":"Your request exceeds the allowed time range. Public API user'
+HTTP  ohne interval: 401 | b'{"error":{"status":{"timestamp":"2026-08-29T11:29:16.120+00:00","error_code":10012,"error_message":"Your request exceeds the allowed time range. Public API user'
+OK    ohne interval 365 Tage: 366 Eintraege
+OK    markets top 5: 5 Eintraege
