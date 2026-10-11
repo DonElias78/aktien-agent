@@ -1,8 +1,8 @@
-# Don Elias Aktien Agent, Lauf vom 2026-10-10
+# Don Elias Aktien Agent, Lauf vom 2026-10-11
 
-Werte erfolgreich verarbeitet: 653
-Fehlgeschlagen: 12
-Laufzeit: 243 Sekunden
+Werte erfolgreich verarbeitet: 652
+Fehlgeschlagen: 13
+Laufzeit: 246 Sekunden
 Werte mit veraltetem Kursdatum: 1
 
 ## Top 10 US Aktien
@@ -13,9 +13,9 @@ Werte mit veraltetem Kursdatum: 1
 | 2 | LITE (LITE) | 99.8 | +473.7% | +43.6% | +17.9% | 97.9% | ja |
 | 3 | MU (MU) | 99.7 | +397.8% | +9.8% | +5.3% | 81.1% | ja |
 | 4 | VLO (VLO) | 99.5 | +142.3% | +47.2% | +12.5% | 37.3% | ja |
-| 5 | PSX (PSX) | 99.2 | +102.7% | +41.0% | +7.6% | 31.5% | ja |
-| 6 | MPC (MPC) | 99.1 | +111.4% | +53.7% | +16.0% | 35.7% | ja |
-| 7 | STX (STX) | 98.9 | +286.3% | -9.0% | -9.2% | 75.5% | ja |
+| 5 | PSX (PSX) | 99.1 | +102.7% | +41.0% | +7.6% | 31.5% | ja |
+| 6 | MPC (MPC) | 98.9 | +111.4% | +53.7% | +16.0% | 35.7% | ja |
+| 7 | STX (STX) | 98.8 | +286.3% | -9.0% | -9.2% | 75.5% | ja |
 | 8 | DELL (DELL) | 98.6 | +211.8% | +37.4% | +15.7% | 74.6% | ja |
 | 9 | WDC (WDC) | 98.3 | +281.0% | -28.5% | -13.8% | 80.6% | nein |
 | 10 | MRK (MRK) | 97.8 | +70.4% | +17.4% | +1.2% | 29.1% | ja |
@@ -26,14 +26,14 @@ Werte mit veraltetem Kursdatum: 1
 |---|---|---|---|---|---|---|---|
 | 1 | RWE (RWE.DE) | 93.8 | +51.8% | +0.9% | -3.7% | 26.3% | ja |
 | 2 | DHL Group (DHL.DE) | 93.2 | +49.3% | -2.1% | +1.9% | 26.6% | ja |
-| 3 | Bayer (BAYN.DE) | 88.1 | +74.6% | -10.9% | -10.1% | 42.6% | ja |
-| 4 | Deutsche Boerse (DB1.DE) | 87.6 | +25.3% | +16.1% | +5.8% | 22.7% | ja |
-| 5 | BASF (BAS.DE) | 85.9 | +31.8% | +4.6% | -3.1% | 24.8% | ja |
+| 3 | Bayer (BAYN.DE) | 88.0 | +74.6% | -10.9% | -10.1% | 42.6% | ja |
+| 4 | Deutsche Boerse (DB1.DE) | 87.4 | +25.3% | +16.1% | +5.8% | 22.7% | ja |
+| 5 | BASF (BAS.DE) | 85.7 | +31.8% | +4.6% | -3.1% | 24.8% | ja |
 | 6 | Allianz (ALV.DE) | 84.0 | +25.1% | -1.0% | -5.1% | 18.4% | ja |
 | 7 | Infineon (IFX.DE) | 83.9 | +75.6% | -18.0% | +5.5% | 53.8% | ja |
-| 8 | Brenntag (BNR.DE) | 79.2 | +29.5% | +4.1% | +1.3% | 29.1% | ja |
-| 9 | Commerzbank (CBK.DE) | 76.6 | +38.5% | -2.9% | -10.0% | 34.6% | ja |
-| 10 | Continental (CON.DE) | 72.1 | +30.8% | -3.7% | -2.2% | 32.4% | ja |
+| 8 | Brenntag (BNR.DE) | 79.0 | +29.5% | +4.1% | +1.3% | 29.1% | ja |
+| 9 | Commerzbank (CBK.DE) | 76.2 | +38.5% | -2.9% | -10.0% | 34.6% | ja |
+| 10 | Continental (CON.DE) | 71.9 | +30.8% | -3.7% | -2.2% | 32.4% | ja |
 
 ## Top 10 ETFs
 
@@ -47,7 +47,7 @@ Werte mit veraltetem Kursdatum: 1
 | 6 | Schwab US Dividend Equity (SCHD) | 96.4 | +28.4% | +1.5% | -2.8% | 11.3% | ja |
 | 7 | iShares Semiconductor (SOXX) | 91.6 | +77.8% | +1.0% | +8.2% | 46.2% | ja |
 | 8 | VanEck Semiconductor (SMH) | 90.1 | +62.4% | +3.0% | +7.7% | 39.8% | ja |
-| 9 | Vanguard High Dividend (VYM) | 86.0 | +16.1% | -1.3% | -1.4% | 10.4% | ja |
+| 9 | Vanguard High Dividend (VYM) | 85.9 | +16.1% | -1.3% | -1.4% | 10.4% | ja |
 | 10 | Technology Select Sector (XLK) | 83.7 | +27.8% | +9.7% | +7.4% | 26.5% | ja |
 
 ## Top 10 Rohstoffe
@@ -55,30 +55,30 @@ Werte mit veraltetem Kursdatum: 1
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
 | 1 | Weizen Future (ZW=F) | 88.2 | +42.6% | +7.0% | -7.2% | 28.4% | ja |
-| 2 | Rohoel Brent Future (BZ=F) | 86.4 | +65.0% | +23.6% | -2.7% | 54.3% | ja |
-| 3 | Rohoel WTI Future (CL=F) | 85.3 | +66.6% | +15.8% | -10.4% | 55.3% | ja |
+| 2 | Rohoel Brent Future (BZ=F) | 86.2 | +65.0% | +23.6% | -2.7% | 54.3% | ja |
+| 3 | Rohoel WTI Future (CL=F) | 85.1 | +66.6% | +15.8% | -10.4% | 55.3% | ja |
 | 4 | Mais Future (ZC=F) | 81.2 | +21.8% | +9.6% | -6.7% | 21.3% | ja |
-| 5 | Kupfer Future (HG=F) | 78.9 | +27.4% | +4.9% | +2.7% | 28.1% | ja |
-| 6 | Silber Future (SI=F) | 55.5 | +37.2% | +3.2% | -5.6% | 66.1% | nein |
-| 7 | Gold Future (GC=F) | 50.9 | +11.7% | +3.8% | -4.3% | 28.9% | nein |
+| 5 | Kupfer Future (HG=F) | 78.9 | +27.4% | +5.7% | +3.5% | 28.1% | ja |
+| 6 | Silber Future (SI=F) | 55.7 | +37.2% | +3.9% | -5.0% | 66.1% | nein |
+| 7 | Gold Future (GC=F) | 50.8 | +11.7% | +3.8% | -4.3% | 28.9% | nein |
 | 8 | Erdgas Future (NG=F) | 41.9 | -13.3% | +10.9% | +13.6% | 91.4% | ja |
-| 9 | Platin Future (PL=F) | 40.0 | +10.0% | +2.9% | -6.6% | 55.2% | nein |
-| 10 | Palladium Future (PA=F) | 22.2 | -10.4% | -12.2% | -11.0% | 56.2% | nein |
+| 9 | Platin Future (PL=F) | 40.4 | +10.0% | +3.8% | -5.8% | 55.2% | nein |
+| 10 | Palladium Future (PA=F) | 22.4 | -10.4% | -11.4% | -10.2% | 56.2% | nein |
 
 ## Top 10 Krypto
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | Zcash (ZEC-USD) | 99.4 | +385.1% | +141.8% | -16.4% | 112.5% | ja |
-| 2 | NEAR Protocol (NEAR-USD) | 98.8 | +197.8% | +226.7% | +46.8% | 89.7% | ja |
-| 3 | WhiteBIT Coin (WBT-USD) | 94.6 | +68.5% | +44.9% | -1.9% | 44.0% | ja |
-| 4 | Ethena (ENA-USD) | 84.7 | +47.4% | +144.0% | +7.7% | 92.8% | ja |
-| 5 | Quant (QNT-USD) | 84.5 | -4.5% | +318.0% | +277.1% | 120.6% | ja |
-| 6 | Chainlink (LINK-USD) | 76.4 | +24.7% | +55.6% | +3.9% | 54.3% | ja |
-| 7 | OKB (OKB-USD) | 76.3 | +29.9% | +34.7% | +7.3% | 49.0% | ja |
-| 8 | Ondo (ONDO-USD) | 73.0 | +46.5% | +40.5% | +17.5% | 80.6% | ja |
-| 9 | Aave (AAVE-USD) | 70.9 | +9.5% | +89.9% | +22.8% | 71.1% | ja |
-| 10 | TRON (TRX-USD) | 70.1 | +18.6% | +0.5% | -2.7% | 17.3% | nein |
+| 1 | Zcash (ZEC-USD) | 99.4 | +394.4% | +142.2% | -18.1% | 112.5% | ja |
+| 2 | NEAR Protocol (NEAR-USD) | 99.2 | +255.1% | +228.7% | +26.1% | 89.7% | ja |
+| 3 | WhiteBIT Coin (WBT-USD) | 94.6 | +69.2% | +45.4% | -1.7% | 44.0% | ja |
+| 4 | Ethena (ENA-USD) | 87.6 | +58.7% | +156.4% | +2.0% | 92.8% | ja |
+| 5 | Quant (QNT-USD) | 84.3 | -5.8% | +317.5% | +279.0% | 120.6% | ja |
+| 6 | Chainlink (LINK-USD) | 80.7 | +33.0% | +57.1% | +2.7% | 54.0% | ja |
+| 7 | OKB (OKB-USD) | 77.2 | +34.4% | +31.2% | +4.4% | 49.0% | ja |
+| 8 | Monero (XMR-USD) | 75.2 | +39.0% | +34.3% | -5.8% | 61.6% | ja |
+| 9 | TRON (TRX-USD) | 73.3 | +20.4% | +0.3% | -3.5% | 17.3% | nein |
+| 10 | Avalanche (AVAX-USD) | 70.3 | +14.3% | +61.0% | -8.9% | 59.8% | ja |
 
 ## Aus der Rangliste ausgeschlossen: 8 Werte
 
@@ -115,6 +115,7 @@ Ausgeschlossen wird nur, was nachweislich ein Datenproblem hat, nie ein unbequem
 - USD1-USD: 404 Symbol unbekannt
 - TAO-USD: 404 Symbol unbekannt
 - PUMP-USD: 404 Symbol unbekannt
+- USYC-USD: 404 Symbol unbekannt
 
 ---
 Kursquelle: Yahoo Finance, dividendenbereinigte Tagesschlusskurse. Die Rangliste der groessten Coins kommt von CoinGecko. Keine Echtzeitdaten. Diese Auswertung ist Statistik, keine Anlageberatung.
