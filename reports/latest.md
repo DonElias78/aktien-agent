@@ -1,100 +1,100 @@
-# Don Elias Aktien Agent, Lauf vom 2026-10-27
+# Don Elias Aktien Agent, Lauf vom 2026-10-28
 
 Werte erfolgreich verarbeitet: 652
 Fehlgeschlagen: 13
-Laufzeit: 243 Sekunden
+Laufzeit: 261 Sekunden
 
 ## Top 10 US Aktien
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | SNDK (SNDK) | 100.0 | +964.2% | +14.5% | -29.4% | 113.1% | ja |
-| 2 | MU (MU) | 99.8 | +424.1% | +10.1% | -16.5% | 81.3% | ja |
-| 3 | LITE (LITE) | 99.5 | +458.8% | +25.5% | -13.1% | 99.5% | ja |
-| 4 | VLO (VLO) | 99.4 | +128.4% | +43.3% | +10.2% | 37.0% | ja |
-| 5 | MRNA (MRNA) | 99.2 | +657.6% | +256.3% | -0.0% | 194.3% | ja |
-| 6 | ILMN (ILMN) | 99.1 | +170.1% | +40.4% | +0.4% | 49.7% | ja |
-| 7 | MPC (MPC) | 98.9 | +104.2% | +54.2% | +19.6% | 35.5% | ja |
-| 8 | PSX (PSX) | 98.8 | +93.9% | +41.1% | +12.9% | 31.5% | ja |
-| 9 | STX (STX) | 98.6 | +307.0% | -13.8% | -29.7% | 76.3% | nein |
-| 10 | DELL (DELL) | 98.3 | +268.3% | +19.1% | -17.0% | 76.1% | ja |
+| 1 | SNDK (SNDK) | 100.0 | +820.1% | +28.4% | -23.8% | 112.7% | ja |
+| 2 | MU (MU) | 99.7 | +381.7% | +25.7% | -11.9% | 81.1% | ja |
+| 3 | LITE (LITE) | 99.5 | +413.8% | +43.8% | -6.0% | 99.5% | ja |
+| 4 | MRNA (MRNA) | 99.2 | +637.8% | +281.7% | +5.4% | 194.3% | ja |
+| 5 | ILMN (ILMN) | 99.1 | +171.6% | +43.5% | +2.8% | 49.8% | ja |
+| 6 | VLO (VLO) | 98.9 | +132.6% | +29.0% | -0.6% | 38.2% | ja |
+| 7 | STX (STX) | 98.8 | +295.6% | -12.6% | -27.5% | 76.3% | nein |
+| 8 | MPC (MPC) | 98.6 | +101.8% | +41.6% | +12.0% | 36.4% | ja |
+| 9 | PSX (PSX) | 98.4 | +93.4% | +30.5% | +5.9% | 32.3% | ja |
+| 10 | DELL (DELL) | 98.3 | +245.7% | +35.8% | -7.6% | 76.4% | ja |
 
 ## Top 10 Deutsche Aktien
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | Bayer (BAYN.DE) | 92.2 | +85.6% | -7.0% | -11.4% | 42.8% | ja |
-| 2 | DHL Group (DHL.DE) | 91.9 | +47.6% | +1.0% | +2.5% | 26.7% | ja |
-| 3 | Deutsche Boerse (DB1.DE) | 91.6 | +30.8% | +19.2% | +9.6% | 22.7% | ja |
-| 4 | RWE (RWE.DE) | 90.4 | +46.6% | +0.9% | -4.0% | 26.8% | ja |
-| 5 | Allianz (ALV.DE) | 83.4 | +24.5% | -0.2% | +1.2% | 18.0% | ja |
-| 6 | Commerzbank (CBK.DE) | 81.1 | +43.5% | -0.4% | -12.3% | 34.8% | ja |
-| 7 | Symrise (SY1.DE) | 80.0 | +23.8% | +7.8% | +6.1% | 26.0% | ja |
-| 8 | Brenntag (BNR.DE) | 77.2 | +26.4% | +1.3% | +5.4% | 29.0% | ja |
-| 9 | Merck (MRK.DE) | 75.9 | +24.4% | +0.4% | +3.6% | 27.6% | ja |
-| 10 | BASF (BAS.DE) | 73.3 | +21.9% | +1.3% | +3.2% | 24.6% | ja |
+| 1 | DHL Group (DHL.DE) | 92.1 | +49.3% | +0.6% | +2.0% | 26.7% | ja |
+| 2 | Deutsche Boerse (DB1.DE) | 91.8 | +32.7% | +18.6% | +8.3% | 22.7% | ja |
+| 3 | Bayer (BAYN.DE) | 90.2 | +77.9% | -4.8% | -6.5% | 42.8% | ja |
+| 4 | RWE (RWE.DE) | 88.0 | +41.8% | +0.7% | -2.2% | 26.7% | ja |
+| 5 | Allianz (ALV.DE) | 84.3 | +24.8% | -0.1% | +2.2% | 18.0% | ja |
+| 6 | Commerzbank (CBK.DE) | 80.0 | +39.1% | +0.4% | -9.9% | 34.7% | ja |
+| 7 | Brenntag (BNR.DE) | 77.8 | +27.2% | +2.3% | +5.5% | 29.0% | ja |
+| 8 | Symrise (SY1.DE) | 77.5 | +28.9% | +1.2% | -3.5% | 27.6% | ja |
+| 9 | Infineon (IFX.DE) | 75.2 | +73.8% | -14.0% | -10.5% | 54.3% | nein |
+| 10 | Merck (MRK.DE) | 73.8 | +21.9% | +1.5% | +5.7% | 27.6% | ja |
 
 ## Top 10 ETFs
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | Invesco Optimum Yield Commodity (PDBC) | 97.7 | +49.2% | +18.1% | +3.3% | 20.6% | ja |
-| 2 | iShares MSCI USA Value (VLUE) | 97.4 | +59.4% | +0.5% | -3.5% | 20.6% | ja |
-| 3 | Invesco DB Commodity (DBC) | 96.9 | +47.6% | +18.1% | +3.6% | 20.5% | ja |
-| 4 | Schwab US Dividend Equity (SCHD) | 95.8 | +26.2% | +4.2% | +6.3% | 11.4% | ja |
-| 5 | United States Oil Fund (USO) | 95.5 | +102.4% | +38.0% | +12.1% | 49.5% | ja |
-| 6 | Energy Select Sector (XLE) | 95.3 | +42.6% | +21.0% | +12.3% | 22.1% | ja |
-| 7 | iShares Semiconductor (SOXX) | 93.8 | +97.3% | +0.1% | -14.1% | 46.4% | ja |
-| 8 | VanEck Semiconductor (SMH) | 92.5 | +76.5% | +2.3% | -10.7% | 40.1% | ja |
-| 9 | Technology Select Sector (XLK) | 87.3 | +36.3% | +8.9% | -5.1% | 26.7% | ja |
-| 10 | Vanguard High Dividend (VYM) | 85.6 | +14.0% | -0.9% | +3.0% | 10.1% | ja |
+| 1 | iShares MSCI USA Value (VLUE) | 97.5 | +55.2% | +4.5% | -1.0% | 20.6% | ja |
+| 2 | Invesco Optimum Yield Commodity (PDBC) | 97.2 | +48.0% | +14.2% | +3.6% | 20.6% | ja |
+| 3 | Invesco DB Commodity (DBC) | 96.9 | +47.0% | +14.2% | +3.4% | 20.6% | ja |
+| 4 | Schwab US Dividend Equity (SCHD) | 95.8 | +25.4% | +3.8% | +6.4% | 11.4% | ja |
+| 5 | United States Oil Fund (USO) | 95.7 | +105.0% | +26.7% | +9.2% | 49.5% | ja |
+| 6 | Energy Select Sector (XLE) | 95.5 | +44.2% | +16.3% | +9.8% | 22.2% | ja |
+| 7 | iShares Semiconductor (SOXX) | 92.9 | +90.0% | +9.9% | -8.9% | 46.6% | ja |
+| 8 | VanEck Semiconductor (SMH) | 91.5 | +71.4% | +10.7% | -7.0% | 40.1% | ja |
+| 9 | Technology Select Sector (XLK) | 86.8 | +33.0% | +13.8% | -2.6% | 26.7% | ja |
+| 10 | Health Care Select Sector (XLV) | 86.2 | +18.8% | +7.8% | +4.6% | 16.4% | ja |
 
 ## Top 10 Rohstoffe
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | Rohoel Brent Future (BZ=F) | 85.1 | +60.4% | +24.6% | +5.4% | 54.4% | ja |
-| 2 | Rohoel WTI Future (CL=F) | 80.4 | +51.0% | +21.9% | +10.0% | 55.4% | ja |
-| 3 | Kupfer Future (HG=F) | 79.8 | +27.7% | +2.5% | +0.6% | 27.2% | ja |
-| 4 | Mais Future (ZC=F) | 72.8 | +23.6% | +1.1% | -13.2% | 21.3% | nein |
-| 5 | Weizen Future (ZW=F) | 71.4 | +34.4% | -6.7% | -10.5% | 28.5% | nein |
-| 6 | Silber Future (SI=F) | 46.9 | +31.5% | -9.4% | -13.0% | 65.3% | nein |
-| 7 | Gold Future (GC=F) | 35.6 | +4.2% | -2.2% | -3.8% | 27.7% | nein |
-| 8 | Platin Future (PL=F) | 33.9 | +9.0% | -9.3% | -13.0% | 53.9% | nein |
-| 9 | Erdgas Future (NG=F) | 31.8 | -12.8% | +10.1% | +1.2% | 92.2% | nein |
-| 10 | Palladium Future (PA=F) | 17.5 | -14.6% | -21.7% | -15.7% | 54.5% | nein |
+| 1 | Rohoel Brent Future (BZ=F) | 84.9 | +59.3% | +23.1% | +8.1% | 54.3% | ja |
+| 2 | Kupfer Future (HG=F) | 80.6 | +27.3% | +3.1% | +1.4% | 27.2% | ja |
+| 3 | Rohoel WTI Future (CL=F) | 80.4 | +48.6% | +19.5% | +13.2% | 55.4% | ja |
+| 4 | Mais Future (ZC=F) | 70.0 | +21.7% | +1.2% | -13.6% | 21.3% | nein |
+| 5 | Weizen Future (ZW=F) | 66.9 | +31.7% | -7.7% | -11.6% | 28.4% | nein |
+| 6 | Silber Future (SI=F) | 46.3 | +28.7% | -6.7% | -11.4% | 65.3% | nein |
+| 7 | Gold Future (GC=F) | 40.8 | +5.4% | +0.2% | -2.9% | 27.7% | nein |
+| 8 | Platin Future (PL=F) | 34.9 | +6.5% | -6.8% | -8.5% | 53.8% | nein |
+| 9 | Erdgas Future (NG=F) | 34.5 | -10.0% | +11.3% | +1.6% | 91.7% | nein |
+| 10 | Palladium Future (PA=F) | 19.1 | -14.3% | -19.9% | -14.9% | 54.5% | nein |
 
 ## Top 10 Krypto
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | NEAR Protocol (NEAR-USD) | 99.7 | +385.7% | +138.1% | -12.6% | 90.0% | ja |
-| 2 | Zcash (ZEC-USD) | 98.4 | +361.3% | +62.3% | -8.8% | 107.3% | ja |
-| 3 | Quant (QNT-USD) | 98.1 | +276.1% | +221.8% | -23.2% | 119.5% | ja |
-| 4 | WhiteBIT Coin (WBT-USD) | 90.1 | +67.6% | +5.6% | -10.6% | 40.4% | ja |
-| 5 | Monero (XMR-USD) | 89.0 | +67.9% | +35.3% | +6.3% | 55.5% | ja |
-| 6 | OKB (OKB-USD) | 87.1 | +70.1% | -4.4% | -20.9% | 44.6% | ja |
-| 7 | Ethena (ENA-USD) | 81.8 | +99.4% | +40.1% | -16.6% | 92.7% | ja |
-| 8 | Chainlink (LINK-USD) | 79.2 | +58.1% | +0.0% | -19.1% | 50.5% | ja |
-| 9 | Solana (SOL-USD) | 73.8 | +41.8% | +3.3% | -17.4% | 46.7% | ja |
-| 10 | BNB (BNB-USD) | 73.1 | +26.2% | +6.1% | -5.6% | 32.2% | ja |
+| 1 | NEAR Protocol (NEAR-USD) | 99.8 | +426.9% | +146.9% | -12.3% | 89.9% | ja |
+| 2 | Zcash (ZEC-USD) | 99.4 | +402.3% | +60.7% | -1.1% | 106.8% | ja |
+| 3 | Quant (QNT-USD) | 97.8 | +272.7% | +217.7% | -20.7% | 119.4% | ja |
+| 4 | WhiteBIT Coin (WBT-USD) | 89.9 | +65.0% | +6.8% | -5.6% | 40.4% | ja |
+| 5 | Monero (XMR-USD) | 89.0 | +67.6% | +38.0% | +9.2% | 55.5% | ja |
+| 6 | OKB (OKB-USD) | 87.6 | +70.2% | -2.5% | -16.2% | 44.5% | ja |
+| 7 | Ethena (ENA-USD) | 83.9 | +97.2% | +40.3% | -8.6% | 92.6% | ja |
+| 8 | Chainlink (LINK-USD) | 79.3 | +55.0% | +1.5% | -11.6% | 50.4% | ja |
+| 9 | BNB (BNB-USD) | 77.3 | +27.8% | +6.9% | -2.0% | 32.2% | ja |
+| 10 | TRON (TRX-USD) | 74.2 | +20.3% | -1.3% | -1.0% | 16.4% | nein |
 
 ## Aus der Rangliste ausgeschlossen: 8 Werte
 
 Ausgeschlossen wird nur, was nachweislich ein Datenproblem hat, nie ein unbequemer Kurs. Jeder Fall steht hier mit Grund.
 
-- **zu kurze Historie (106 Tage)**: 1 Werte
-  - FDXF (zu kurze Historie (106 Tage))
-- **zu kurze Historie (93 Tage)**: 1 Werte
-  - HONA (zu kurze Historie (93 Tage))
+- **zu kurze Historie (107 Tage)**: 1 Werte
+  - FDXF (zu kurze Historie (107 Tage))
+- **zu kurze Historie (94 Tage)**: 1 Werte
+  - HONA (zu kurze Historie (94 Tage))
 - **Split oder Umstellung**: 1 Werte
   - MNST (Split oder Umstellung, Tagessprung 96 Prozent entspricht Faktor 2)
-- **zu kurze Historie (251 Tage)**: 1 Werte
-  - Q (zu kurze Historie (251 Tage))
-- **zu kurze Historie (18 Tage)**: 1 Werte
-  - VYLR (zu kurze Historie (18 Tage))
-- **zu kurze Historie (8 Tage)**: 1 Werte
-  - 1COV.DE (zu kurze Historie (8 Tage))
+- **zu kurze Historie (252 Tage)**: 1 Werte
+  - Q (zu kurze Historie (252 Tage))
+- **zu kurze Historie (19 Tage)**: 1 Werte
+  - VYLR (zu kurze Historie (19 Tage))
+- **zu kurze Historie (9 Tage)**: 1 Werte
+  - 1COV.DE (zu kurze Historie (9 Tage))
 - **Datenbruch**: 1 Werte
   - GRAM-USD (Datenbruch, groesster Tagessprung 125331 Prozent)
 - **kaum Bewegung**: 1 Werte
@@ -108,13 +108,13 @@ Ausgeschlossen wird nur, was nachweislich ein Datenproblem hat, nie ein unbequem
 - HYPE-USD: 404 Symbol unbekannt
 - RAIN-USD: 404 Symbol unbekannt
 - UNI-USD: 404 Symbol unbekannt
-- USD1-USD: 404 Symbol unbekannt
 - CC-USD: 404 Symbol unbekannt
+- USD1-USD: 404 Symbol unbekannt
 - SUI-USD: 404 Symbol unbekannt
 - TAO-USD: 404 Symbol unbekannt
-- USYC-USD: 404 Symbol unbekannt
-- USDY-USD: 404 Symbol unbekannt
 - BTW-USD: 404 Symbol unbekannt
+- USDY-USD: 404 Symbol unbekannt
+- USYC-USD: 404 Symbol unbekannt
 
 ---
 Kursquelle: Yahoo Finance, dividendenbereinigte Tagesschlusskurse. Die Rangliste der groessten Coins kommt von CoinGecko. Keine Echtzeitdaten. Diese Auswertung ist Statistik, keine Anlageberatung.
