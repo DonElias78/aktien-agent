@@ -1,8 +1,8 @@
-# Don Elias Aktien Agent, Lauf vom 2026-11-07
+# Don Elias Aktien Agent, Lauf vom 2026-11-08
 
 Werte erfolgreich verarbeitet: 652
 Fehlgeschlagen: 13
-Laufzeit: 221 Sekunden
+Laufzeit: 233 Sekunden
 
 ## Top 10 US Aktien
 
@@ -54,30 +54,30 @@ Laufzeit: 221 Sekunden
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
 | 1 | Rohoel Brent Future (BZ=F) | 84.5 | +64.5% | +10.6% | -5.7% | 56.2% | ja |
-| 2 | Rohoel WTI Future (CL=F) | 80.2 | +53.9% | +9.2% | -0.7% | 56.7% | ja |
-| 3 | Kupfer Future (HG=F) | 72.4 | +31.8% | -6.0% | -4.6% | 27.2% | nein |
-| 4 | Mais Future (ZC=F) | 58.6 | +14.9% | +0.7% | -11.7% | 21.3% | nein |
+| 2 | Kupfer Future (HG=F) | 80.6 | +31.8% | -5.7% | -4.3% | 27.2% | ja |
+| 3 | Rohoel WTI Future (CL=F) | 80.0 | +53.9% | +9.2% | -0.7% | 56.7% | ja |
+| 4 | Mais Future (ZC=F) | 58.8 | +14.9% | +0.7% | -11.7% | 21.3% | nein |
 | 5 | Weizen Future (ZW=F) | 56.1 | +23.2% | -7.7% | -13.5% | 28.3% | nein |
-| 6 | Silber Future (SI=F) | 35.5 | +23.6% | -20.0% | -12.3% | 65.9% | nein |
+| 6 | Silber Future (SI=F) | 35.8 | +23.6% | -19.8% | -12.1% | 65.9% | nein |
 | 7 | Gold Future (GC=F) | 28.2 | +4.4% | -7.0% | -2.0% | 28.1% | nein |
-| 8 | Platin Future (PL=F) | 27.4 | +6.4% | -11.9% | -5.4% | 54.2% | nein |
+| 8 | Platin Future (PL=F) | 27.3 | +6.4% | -12.0% | -5.5% | 54.2% | nein |
 | 9 | Erdgas Future (NG=F) | 21.1 | -27.3% | +8.3% | -5.4% | 89.1% | nein |
-| 10 | Palladium Future (PA=F) | 10.2 | -19.7% | -25.8% | -9.0% | 55.1% | nein |
+| 10 | Palladium Future (PA=F) | 10.4 | -19.7% | -25.5% | -8.8% | 55.1% | nein |
 
 ## Top 10 Krypto
 
 | Rang | Wert | Score | 12-1 Momentum | 63 Tage | 21 Tage | Vola p.a. | ueber SMA200 |
 |---|---|---|---|---|---|---|---|
-| 1 | Zcash (ZEC-USD) | 99.4 | +411.2% | +26.3% | +15.0% | 107.2% | ja |
-| 2 | NEAR Protocol (NEAR-USD) | 99.2 | +315.8% | +68.3% | -24.0% | 89.6% | ja |
-| 3 | Quant (QNT-USD) | 98.0 | +207.2% | +203.6% | +0.8% | 120.3% | ja |
-| 4 | Monero (XMR-USD) | 88.8 | +69.2% | +10.7% | +7.6% | 54.8% | ja |
-| 5 | WhiteBIT Coin (WBT-USD) | 88.5 | +59.5% | -0.7% | -8.3% | 40.8% | ja |
-| 6 | OKB (OKB-USD) | 79.8 | +49.3% | -7.5% | -8.7% | 44.6% | ja |
-| 7 | Ethena (ENA-USD) | 73.0 | +80.7% | -6.0% | -14.3% | 94.4% | ja |
-| 8 | Chainlink (LINK-USD) | 64.7 | +35.4% | -10.4% | -9.8% | 50.6% | ja |
-| 9 | Bitcoin (BTC-USD) | 63.7 | +21.5% | -5.0% | -6.8% | 32.6% | ja |
-| 10 | TRON (TRX-USD) | 62.3 | +18.3% | -4.5% | -4.3% | 20.3% | nein |
+| 1 | NEAR Protocol (NEAR-USD) | 99.4 | +335.5% | +53.2% | -25.6% | 89.6% | ja |
+| 2 | Zcash (ZEC-USD) | 99.2 | +429.9% | +3.8% | +12.9% | 107.2% | ja |
+| 3 | Quant (QNT-USD) | 98.1 | +210.5% | +198.7% | +4.1% | 120.2% | ja |
+| 4 | WhiteBIT Coin (WBT-USD) | 90.5 | +65.5% | -1.7% | -9.1% | 40.6% | ja |
+| 5 | Monero (XMR-USD) | 90.1 | +74.7% | +11.5% | +0.7% | 54.8% | ja |
+| 6 | OKB (OKB-USD) | 79.1 | +49.7% | -10.5% | -10.0% | 44.7% | ja |
+| 7 | Ethena (ENA-USD) | 72.2 | +81.8% | -12.0% | -17.7% | 94.5% | ja |
+| 8 | Bitcoin (BTC-USD) | 68.4 | +24.8% | -5.6% | -7.5% | 32.5% | ja |
+| 9 | Chainlink (LINK-USD) | 63.7 | +38.7% | -18.5% | -10.4% | 50.5% | ja |
+| 10 | TRON (TRX-USD) | 62.3 | +18.4% | -4.5% | -3.7% | 20.3% | nein |
 
 ## Aus der Rangliste ausgeschlossen: 7 Werte
 
